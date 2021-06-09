@@ -7,6 +7,20 @@ defmodule Exlivery.Orders.Item do
 
   def build(description, category, unity_price, quantity)
       when quantity > 0 and category in @categories do
+    unity_price
+    |> Decimal.cast()
+    |> build_item(description, category, quantity)
+  end
+
+  def build(_description, category, _unity_price, _quantity) when category not in @categories do
+    {:error, "Category is invalid!"}
+  end
+
+  def build(_description, _category, _unity_price, quantity) when quantity < 1 do
+    {:error, "Quantity is invalid!"}
+  end
+
+  defp build_item({:ok, unity_price}, description, category, quantity) do
     {:ok,
      %__MODULE__{
        description: description,
@@ -16,11 +30,7 @@ defmodule Exlivery.Orders.Item do
      }}
   end
 
-  def build(_description, category, _unity_price, _quantity) when category not in @categories do
-    {:error, "Category is invalid!"}
-  end
-
-  def build(_description, _category, _unity_price, quantity) when quantity < 1 do
-    {:error, "Quantity is invalid!"}
+  defp build_item(:error, _description, _category, _quantity) do
+    {:error, "Unit price is invalid!"}
   end
 end
