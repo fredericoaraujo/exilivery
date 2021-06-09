@@ -1,8 +1,8 @@
 # Exlivery
 
-It's a project to study and knowlodge of elixir lang.
+É um projeto para estudo e aprendizado da linguagem elixir.
 
-## How to install
+## Como instalar
 
 ```
 git clone git@github.com:fredericoaraujo/exilivery.git
