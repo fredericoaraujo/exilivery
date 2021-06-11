@@ -23,7 +23,7 @@ defmodule Exlivery.Orders.ItemTest do
     test "when there is an invalid price, returns price is invalid!" do
       response = Item.build("Pizza Peperoni", :pizza, "invalid_price", 1)
       expected = {:error, "Unit price is invalid!"}
-      expected = assert response == expected
+      assert response == expected
     end
 
     test "when there is an invalid quantity, returns quantity is invalid!" do
