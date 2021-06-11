@@ -20,6 +20,10 @@ defmodule Exlivery.Orders.Item do
     {:error, "Quantity is invalid!"}
   end
 
+  def build(_description, _category, unity_price, _quantity) when unity_price < 0 do
+    {:error, "Unity price is invalid!"}
+  end
+
   defp build_item({:ok, unity_price}, description, category, quantity) do
     {:ok,
      %__MODULE__{
