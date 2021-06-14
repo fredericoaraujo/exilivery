@@ -26,6 +26,10 @@ defmodule Exlivery.Orders.CreateOrUpdateTest do
         quantity: 1
       }
 
+      :user
+      |> build(cpf: cpf)
+      |> UserAgent.save()
+
       {:ok, user_cpf: cpf, item1: item1, item2: item2}
     end
 
@@ -34,24 +38,44 @@ defmodule Exlivery.Orders.CreateOrUpdateTest do
       item1: item1,
       item2: item2
     } do
-      :user
-      |> build(cpf: cpf)
-      |> UserAgent.save()
-
       params = %{cpf: cpf, items: [item1, item2]}
 
       assert {:ok, _uuid} = CreteOrUpdate.call(params)
     end
 
-    test "when any params is/are not valid, returns error", %{
+    test "when cpf is invalid, returns error", %{
+      user_cpf: _cpf,
+      item1: item1,
+      item2: item2
+    } do
+      params = %{cpf: "00000000000", items: [item1, item2]}
+
+      response = CreteOrUpdate.call(params)
+      expected = {:error, "User not found!"}
+
+      assert response == expected
+    end
+
+    test "when item is invalid, returns error", %{
       user_cpf: cpf,
       item1: item1,
       item2: item2
     } do
-      params = %{cpf: cpf, items: [item1, item2]}
+      params = %{cpf: cpf, items: [%{item1 | quantity: 0}, item2]}
 
-      {response, _reason} = CreteOrUpdate.call(params)
-      expected = :error
+      response = CreteOrUpdate.call(params)
+      expected = {:error, "Any item is invalid!"}
+
+      assert response == expected
+    end
+
+    test "when do not have items, returns error", %{
+      user_cpf: cpf
+    } do
+      params = %{cpf: cpf, items: []}
+
+      response = CreteOrUpdate.call(params)
+      expected = {:error, "Order is invalid!"}
 
       assert response == expected
     end
