@@ -58,4 +58,5 @@ erl_crash.dump
 .history
 .ionide
 
+.csv
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,elixir
