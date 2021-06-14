@@ -13,13 +13,7 @@ defmodule Exlivery.Users.CreateOrUpdateTest do
     end
 
     test "when all params are valid, saves the user" do
-      params = %{
-        address: "Brasilia/DF",
-        age: 38,
-        cpf: "1234568900",
-        email: "frederico@test.com",
-        name: "Frederico Araujo"
-      }
+      params = build(:user)
 
       response = CreteOrUpdate.call(params)
       expected = {:ok, "User created with successfully"}
@@ -28,13 +22,7 @@ defmodule Exlivery.Users.CreateOrUpdateTest do
     end
 
     test "when any params is/are not valid, returns error" do
-      params = %{
-        address: "Brasilia/DF",
-        age: 18,
-        cpf: 1_234_568_900,
-        email: "frederico@test.com",
-        name: "Frederico Araujo"
-      }
+      params = build(:user, cpf: 12_345_678_900)
 
       {response, _reason} = CreteOrUpdate.call(params)
       expected = :error

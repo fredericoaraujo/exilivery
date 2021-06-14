@@ -33,7 +33,8 @@ defmodule Exlivery.Orders.AgentTest do
 
     test "when the order is not found, returns error" do
       order = build(:order)
-      {:ok, uuid} = OrderAgent.save(order)
+
+      {:ok, _uuid} = OrderAgent.save(order)
 
       response = OrderAgent.get("0000-0000-0000-0000")
 
