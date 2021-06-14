@@ -12,9 +12,11 @@ defmodule Exlivery.Orders.Agent do
     {:ok, uuid}
   end
 
-  def get(uuid), do: Agent.get(__MODULE__, &get_user(&1, uuid))
+  def get(uuid), do: Agent.get(__MODULE__, &get_order(&1, uuid))
 
-  defp get_user(state, uuid) do
+  def get_all, do: Agent.get(__MODULE__, & &1)
+
+  defp get_order(state, uuid) do
     case Map.get(state, uuid) do
       nil -> {:error, "Order not found!"}
       order -> {:ok, order}
